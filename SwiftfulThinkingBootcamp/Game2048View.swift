@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 // Model kafelka 2048
 struct Tile: Identifiable {
@@ -11,11 +12,33 @@ struct Tile: Identifiable {
 
 // Model gry 2048
 class Game2048Model: ObservableObject {
+    
     @Published var tiles: [Tile] = []
     let size = 4
     
     init() {
-        resetGame()
+        // Seed the game with two random tiles without calling methods before full init
+        tiles = []
+        // We'll add two tiles at random empty spots
+        func randomEmptySpot(existingTiles: [Tile], size: Int) -> (Int, Int)? {
+            var empty: [(Int, Int)] = []
+            for r in 0..<size {
+                for c in 0..<size {
+                    if !existingTiles.contains(where: { $0.row == r && $0.col == c }) {
+                        empty.append((r, c))
+                    }
+                }
+            }
+            return empty.randomElement()
+        }
+        if let s1 = randomEmptySpot(existingTiles: tiles, size: size) {
+            let v1 = Int.random(in: 0..<10) == 0 ? 4 : 2
+            tiles.append(Tile(value: v1, row: s1.0, col: s1.1))
+        }
+        if let s2 = randomEmptySpot(existingTiles: tiles, size: size) {
+            let v2 = Int.random(in: 0..<10) == 0 ? 4 : 2
+            tiles.append(Tile(value: v2, row: s2.0, col: s2.1))
+        }
     }
     
     func resetGame() {
