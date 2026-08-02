@@ -20,7 +20,7 @@ struct TextBootcamp: View {
         .multilineTextAlignment(.leading)
         .foregroundStyle(.black)
         .background(Color.yellow)
-        .frame(width: 200, height: 100, alignment: .center)
+        .frame(width: 300, height: 200, alignment: .center)
         .minimumScaleFactor(0.1)
     }
 }
